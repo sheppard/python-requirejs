@@ -36,5 +36,23 @@ requirejs.optimize(
 )
 ```
 
+All of the [available build options for r.js](http://requirejs.org/docs/optimization.html#options) should Just Work, though if you find any discrepancies, please [open a ticket](https://github.com/wq/python-requirejs/issues) to let us know.
+
+This library is meant to be a drop-in replacement for `node r.js -o app.build.json`, and is tested by comparing its output with that command.  However, since the optimize API is being called as a function, you may need to set the working directory explicitly to avoid any unexpected differences in how relative paths are computed:
+
+```python
+import requirejs
+import json
+
+with open('app/app.build.json') as f:
+    config = json.load(f)
+
+requirejs.optimize(
+    config,
+    working_directory="app/"  # Unique to python-requirejs
+)
+```
+
+
 [PyMiniRacer]: https://github.com/sqreen/PyMiniRacer
 [env.js]: https://github.com/wq/python-requirejs/blob/master/requirejs/env.js
