@@ -1,0 +1,9 @@
+{
+    "dir": "../../output/simple",
+    "appDir": ".",
+    "baseUrl": "js",
+    "optimize": "none",
+    "modules": [
+        {"name": "main"}
+    ]
+}

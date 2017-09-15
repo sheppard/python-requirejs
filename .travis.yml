@@ -1,0 +1,11 @@
+language: python
+sudo: false
+python: 3.6
+env:
+ - LINT=
+ - LINT=1
+install:
+ - npm install jshint
+ - pip install flake8
+script:
+ - ./runtests.sh
