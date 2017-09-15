@@ -40,7 +40,7 @@ setup(
     license='MIT',
     packages=['requirejs'],
     package_data={
-        'requirejs': ["requirejs/*.js"],
+        'requirejs': ["*.js"],
     },
     install_requires=[
         'py-mini-racer',
