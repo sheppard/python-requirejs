@@ -5,7 +5,7 @@ env:
  - LINT=
  - LINT=1
 install:
- - npm install jshint
+ - npm install -g jshint
  - pip install py-mini-racer
  - pip install flake8
 script:
