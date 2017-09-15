@@ -6,6 +6,7 @@ env:
  - LINT=1
 install:
  - npm install jshint
+ - pip install py-mini-racer
  - pip install flake8
 script:
  - ./runtests.sh
