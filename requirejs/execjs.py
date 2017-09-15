@@ -12,6 +12,7 @@ def execjs(filename, method, argument=None, callback=False,
     with open(os.path.join(js_dir, filename)) as f:
         lib = f.read()
 
+    argv = [filename] + argv
     with get_js_env(base_dir, write_dir, argv) as ctx:
         ctx.eval(lib)
         if callback:
@@ -28,7 +29,7 @@ def execjs(filename, method, argument=None, callback=False,
 def get_js_env(base_dir=None, write_dir=None, argv=[]):
     ctx = py_mini_racer.MiniRacer()
     ctx.eval(env)
-    ctx.call('setArgV', argv)
+    ctx.call('setArgV', ['node'] + argv)
 
     base_dir = os.path.abspath(base_dir)
     if write_dir and not os.path.abspath(write_dir).startswith(base_dir):
