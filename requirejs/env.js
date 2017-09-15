@@ -13,7 +13,9 @@ var process = {
     "argv": ['node'],
     "nextTick": function(fn) {
         fn();
-    }
+    },
+    'stdout': {},
+    'stderr': {}
 };
 
 
