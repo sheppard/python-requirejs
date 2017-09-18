@@ -21,7 +21,7 @@ var process = {
 
 var _readFiles = {}, _readDirs = {};
 function addFile(filename, contents) {
-    filename = _reg.fs.realpathSync(filename);
+    filename = normalizePath(filename);
     _readFiles[filename] = contents;
     var dirname = _reg.path.dirname(filename);
     while (!_readDirs[dirname]) {
@@ -39,6 +39,10 @@ function setBasePath(path) {
     _basePath = path;
 }
 
+function normalizePath(filename) {
+    return _reg.fs.realpathSync(_reg.path.normalize(filename));
+}
+
 _writeFiles = {};
 _writeDirs = {};
 _deleteFiles = {};
@@ -47,7 +51,7 @@ _deleteDirs = {};
 var _reg = {
     'fs': {
          'existsSync': function(filename) {
-             filename = _reg.fs.realpathSync(filename);
+             filename = normalizePath(filename);
              if (_readFiles[filename])
                  return true;
              if (_readDirs[filename] || _readDirs[filename.replace(/\/$/, '')])
@@ -55,6 +59,7 @@ var _reg = {
              return false;
          },
          'statSync': function(filename) {
+             filename = normalizePath(filename);
              var isFile = false, isDirectory = false;
              var stats = {
                  'isFile': function() {
@@ -87,16 +92,19 @@ var _reg = {
              return filename;
          },
          'readFileSync': function(filename) {
+             filename = normalizePath(filename);
              if (!_readFiles.hasOwnProperty(filename)) {
                  throw new Error(filename + ' not found.');
              }
              return _readFiles[filename];
          },
          'mkdirSync': function(path) {
+             path = normalizePath(path);
              _writeDirs[path] = true;
              _readDirs[path] = true;
          },
          'readdirSync': function(path) {
+             path = normalizePath(path);
              var filenames = [];
              if (!path.match(/\/$/)) {
                  path += '/';
@@ -112,19 +120,24 @@ var _reg = {
              return filenames;
          },
          'writeFileSync': function(path, data) {
+             path = normalizePath(path);
              addFile(path, data);
              _writeFiles[path] = data;
          },
          'renameSync': function(oldpath, newpath) {
+             oldpath = normalizePath(oldpath);
+             newpath = normalizePath(newpath);
              this.writeFileSync(newpath, _writeFiles[oldpath]);
              this.unlinkSync(oldpath);
          },
          'unlinkSync': function(path) {
+             path = normalizePath(path);
              _deleteFiles[path] = true;
              delete _writeFiles[path];
              delete _readFiles[path];
          },
          'rmdirSync': function(path) {
+             path = normalizePath(path);
              var key;
              for (key in _readFiles) {
                  if (key.indexOf(path + '/') === 0) {
