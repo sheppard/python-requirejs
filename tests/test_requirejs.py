@@ -4,6 +4,7 @@ import os
 import json
 import filecmp
 import subprocess
+import timeit
 
 
 FIXTURE_PATH = os.path.join(os.path.dirname(__file__), "input")
@@ -11,6 +12,8 @@ RJS_PATH = os.path.join(os.path.dirname(__file__), "..", "requirejs", "r.js")
 
 
 class RequireJSTestCase(unittest.TestCase):
+    timings = {}
+
     def fixture_test(self, fixture):
         path = os.path.join(FIXTURE_PATH, fixture, 'app.build.json')
         with open(path) as f:
@@ -18,11 +21,18 @@ class RequireJSTestCase(unittest.TestCase):
 
         print()
         dir1 = os.path.join(FIXTURE_PATH, fixture, config['dir'])
-        self.compile_node(path)
+        node_time = timeit.timeit(
+            lambda: self.compile_node(path),
+            number=1,
+        )
 
         config['dir'] += '_2'
         dir2 = os.path.join(FIXTURE_PATH, fixture, config['dir'])
-        self.compile_miniracer(path, config)
+        mr_time = timeit.timeit(
+            lambda: self.compile_miniracer(path, config),
+            number=1,
+        )
+        self.timings[fixture] = (node_time, mr_time)
 
         def find_diffs(dirs, base=""):
             prefix = base
@@ -61,9 +71,24 @@ class RequireJSTestCase(unittest.TestCase):
         print(result)
 
     def compile_node(self, path):
-        print("Output from node r.js:")
+        print("Output from 'node r.js -o app.build.json':")
         result = subprocess.call(["node", RJS_PATH, "-o", path])
         self.assertFalse(result, "Node compilation failed")
+
+    @classmethod
+    def tearDownClass(cls):
+        print()
+        print("PyMiniRacer speedup over Node.js subprocess:")
+        for name, (node_time, mr_time) in sorted(cls.timings.items()):
+            rel_ms = node_time - mr_time
+            rel_pct = rel_ms / node_time
+            label = name[:8] + (" " * (8 - len(name)))
+            print("test_%s: %s%% %s%sms)" % (
+                label,
+                abs(round(rel_pct * 100, 2)),
+                "slower (+" if rel_pct < 0 else "faster (-",
+                abs(round(rel_ms * 1000))
+            ))
 
 
 def make_test(name):
