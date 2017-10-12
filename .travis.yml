@@ -12,5 +12,6 @@ install:
  - npm install -g jshint
  - pip install py-mini-racer
  - pip install flake8
+ - pip install wq.app
 script:
  - ./runtests.sh

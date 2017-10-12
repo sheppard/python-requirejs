@@ -1,6 +1,7 @@
 from py_mini_racer import py_mini_racer
 from contextlib import contextmanager
 import os
+import base64
 
 js_dir = os.path.dirname(__file__)
 with open(os.path.join(js_dir, 'env.js')) as f:
@@ -51,10 +52,15 @@ def read_files(ctx, base_dir):
             continue
         seen.add(base)
         for filename in files:
-            if filename.endswith(('.css', '.js')):
-                path = os.path.join(base, filename)
-                with open(path) as f:
-                    ctx.call('addFile', path, f.read())
+            path = os.path.join(base, filename)
+            with open(path, 'rb') as f:
+                contents = f.read()
+                try:
+                    contents = contents.decode('utf-8')
+                except UnicodeDecodeError:
+                    contents = base64.b64encode(contents)
+                    contents = 'base64,' + contents.decode('ascii')
+                ctx.call('addFile', path, contents)
 
 
 def delete_files(ctx, write_dir):
@@ -90,16 +96,24 @@ def write_files(ctx, write_dir):
 
     write_dir = os.path.abspath(write_dir)
 
+    file_dirs = set(
+        os.path.dirname(name)
+        for name in files
+    )
     for name in sorted(dirs):
         path = os.path.abspath(name)
         if not path.startswith(write_dir):
             continue
-        if not os.path.exists(path):
+        if not os.path.exists(path) and path in file_dirs:
             os.mkdir(path)
 
-    for name, val in files.items():
+    for name, contents in files.items():
         path = os.path.abspath(name)
         if not path.startswith(write_dir):
             raise Exception("Attempt to write to file outside of write_dir")
-        with open(path, 'w') as f:
-            f.write(val)
+        with open(path, 'wb') as f:
+            if contents.startswith('base64,'):
+                contents = base64.b64decode(contents[7:])
+            else:
+                contents = contents.encode('utf-8')
+            f.write(contents)

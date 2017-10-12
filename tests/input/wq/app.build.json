@@ -1,0 +1,14 @@
+{
+    "appDir": "app",
+    "baseUrl": "js/lib",
+    "dir": "htdocs-build",
+    "skipDirOptimize": true,
+    "removeCombined": true,
+    "modules": [
+        {"name": "testapp"}
+    ],
+    "paths": {
+        "testapp": "../testapp",
+        "data": "../data"
+    }
+}

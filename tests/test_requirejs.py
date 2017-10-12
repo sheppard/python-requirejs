@@ -11,7 +11,7 @@ RJS_PATH = os.path.join(os.path.dirname(__file__), "..", "requirejs", "r.js")
 
 
 class RequireJSTestCase(unittest.TestCase):
-    def fixture_test(self, name):
+    def fixture_test(self, fixture):
         path = os.path.join(FIXTURE_PATH, fixture, 'app.build.json')
         with open(path) as f:
             config = json.load(f)
@@ -66,7 +66,11 @@ class RequireJSTestCase(unittest.TestCase):
         self.assertFalse(result, "Node compilation failed")
 
 
-for fixture in os.listdir(FIXTURE_PATH):
+def make_test(name):
     def test_fixture(self):
-        self.fixture_test(fixture)
-    setattr(RequireJSTestCase, 'test_%s' % fixture, test_fixture)
+        self.fixture_test(name)
+    return test_fixture
+
+
+for fixture in os.listdir(FIXTURE_PATH):
+    setattr(RequireJSTestCase, 'test_%s' % fixture, make_test(fixture))

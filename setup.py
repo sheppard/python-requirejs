@@ -64,4 +64,7 @@ setup(
         'Topic :: Software Development :: Pre-processors',
     ],
     test_suite='tests',
+    tests_require=[
+        'wq.app'
+    ],
 )
