@@ -1,0 +1,8 @@
+{
+    "dir": "../../output/es6",
+    "appDir": ".",
+    "baseUrl": "js",
+    "modules": [
+        {"name": "main"}
+    ]
+}

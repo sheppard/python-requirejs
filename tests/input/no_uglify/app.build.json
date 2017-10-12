@@ -1,0 +1,9 @@
+{
+    "dir": "../../output/no_uglify",
+    "appDir": ".",
+    "baseUrl": "js",
+    "optimize": "none",
+    "modules": [
+        {"name": "main"}
+    ]
+}
