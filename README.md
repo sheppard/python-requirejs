@@ -14,7 +14,7 @@ Run RequireJS (r.js) from Python without requiring Node or Rhino.  Leverages [Py
 
 ## Usage
 
-`python-requirejs` (will soon be) available via PyPI:
+`python-requirejs` is available via PyPI:
 
 ```bash
 pip install requirejs
@@ -24,7 +24,6 @@ pip install requirejs
 
 ```python
 import requirejs
-
 
 requirejs.optimize(
     appDir=".",
@@ -36,7 +35,7 @@ requirejs.optimize(
 )
 ```
 
-All of the [available build options for r.js](http://requirejs.org/docs/optimization.html#options) should Just Work, though if you find any discrepancies, please [open a ticket](https://github.com/wq/python-requirejs/issues) to let us know.
+Hopefully, all of the [available build options for r.js](http://requirejs.org/docs/optimization.html#options) will Just Work.  If you find any discrepancies, please [open a ticket](https://github.com/wq/python-requirejs/issues) to let us know.
 
 This library is meant to be a drop-in replacement for `node r.js -o app.build.json`, and is tested by comparing its output with that command.  However, since the optimize API is being called as a function, you may need to set the working directory explicitly to avoid any unexpected differences in how relative paths are computed:
 
