@@ -104,8 +104,8 @@ def write_files(ctx, write_dir):
         path = os.path.abspath(name)
         if not path.startswith(write_dir):
             continue
-        if not os.path.exists(path) and path in file_dirs:
-            os.mkdir(path)
+        if path in file_dirs:
+            os.makedirs(path, exist_ok=True)
 
     for name, contents in files.items():
         path = os.path.abspath(name)
