@@ -1,4 +1,9 @@
-from py_mini_racer import py_mini_racer
+try:
+    from py_mini_racer import py_mini_racer
+except ImportError:
+    has_mini_racer = False
+else:
+    has_mini_racer = True
 from contextlib import contextmanager
 import os
 import base64

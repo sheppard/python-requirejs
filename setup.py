@@ -43,7 +43,8 @@ setup(
         'requirejs': ["*.js"],
     },
     install_requires=[
-        'py-mini-racer',
+        'py-mini-racer; platform_system == "Linux"',
+        'py-mini-racer; platform_system == "Darwin"',
     ],
     description=LONG_DESCRIPTION.strip(),
     long_description=parse_markdown_readme(),
