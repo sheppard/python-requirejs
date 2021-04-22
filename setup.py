@@ -33,7 +33,7 @@ def parse_markdown_readme():
 
 setup(
     name='requirejs',
-    version='0.2.2-dev',
+    version='0.2.3-dev',
     author='S. Andrew Sheppard',
     author_email='andrew@wq.io',
     url='https://github.com/wq/python-requirejs',
@@ -43,8 +43,8 @@ setup(
         'requirejs': ["*.js"],
     },
     install_requires=[
-        'py-mini-racer; platform_system == "Linux"',
-        'py-mini-racer; platform_system == "Darwin"',
+        'py-mini-racer<0.6; platform_system == "Linux"',
+        'py-mini-racer<0.6; platform_system == "Darwin"',
     ],
     description=LONG_DESCRIPTION.strip(),
     long_description=parse_markdown_readme(),
@@ -55,9 +55,11 @@ setup(
         'Natural Language :: English',
         'Programming Language :: JavaScript',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Build Tools',
         'Topic :: Software Development :: Pre-processors',
