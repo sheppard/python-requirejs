@@ -33,7 +33,7 @@ def parse_markdown_readme():
 
 setup(
     name='requirejs',
-    version='0.2.3-dev',
+    version='0.2.2',
     author='S. Andrew Sheppard',
     author_email='andrew@wq.io',
     url='https://github.com/wq/python-requirejs',
